@@ -1,0 +1,56 @@
+{
+  "scenario_id": "approval-workflow.demo.v1",
+  "title": "Approval workflow without workflow engine",
+  "description": "Purchase request processed by procurement service, then manager approval via CLI. No Temporal, no Airflow.",
+
+  "agents": [
+    {
+      "role": "procurement",
+      "address": "procurement-service-demo",
+      "display_name": "Procurement Service",
+      "delivery_mode": "stream",
+      "create_if_missing": true
+    }
+  ],
+
+  "humans": [
+    {
+      "role": "manager",
+      "display_name": "Purchasing Manager"
+    }
+  ],
+
+  "workflow": {
+    "steps": [
+      {
+        "step_id": "process_request",
+        "tool_id": "tool.agent.task.v1",
+        "assigned_to": "procurement",
+        "step_deadline_seconds": 60
+      },
+      {
+        "step_id": "manager_approval",
+        "tool_id": "tool.approval.human_signoff",
+        "assigned_to": "manager",
+        "requires_approval": true,
+        "step_deadline_seconds": 3600,
+        "human_task": {
+          "title": "Purchase approval - office supplies $2,450",
+          "description": "Review purchase request and approve or reject."
+        }
+      }
+    ]
+  },
+
+  "intent": {
+    "type": "intent.purchase.approval.v1",
+    "payload": {
+      "request_id": "PO-2026-001",
+      "department": "Engineering",
+      "items": "Office supplies, monitors",
+      "amount": 2450.00,
+      "requested_by": "jane.doe@company.com"
+    },
+    "max_delivery_attempts": 3
+  }
+}

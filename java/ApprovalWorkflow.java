@@ -10,16 +10,16 @@
  *   mvn compile exec:java -Dexec.mainClass="ApprovalWorkflow"
  */
 
-import ai.axme.sdk.AxmeClient;
-import ai.axme.sdk.AxmeClientConfig;
+import dev.axme.sdk.AxmeClient;
+import dev.axme.sdk.AxmeClientConfig;
+import dev.axme.sdk.RequestOptions;
+import dev.axme.sdk.ObserveOptions;
 import java.util.Map;
 
 public class ApprovalWorkflow {
     public static void main(String[] args) throws Exception {
         var client = new AxmeClient(
-            AxmeClientConfig.builder()
-                .apiKey(System.getenv("AXME_API_KEY"))
-                .build()
+            AxmeClientConfig.forCloud(System.getenv("AXME_API_KEY"))
         );
 
         // Submit purchase request with approval chain
@@ -32,11 +32,11 @@ public class ApprovalWorkflow {
                 "requester", "alice@company.com",
                 "cost_center", "engineering"
             )
-        ));
+        ), new RequestOptions());
         System.out.println("Purchase request submitted: " + intentId);
 
         // Wait for full approval chain to complete
-        var result = client.waitFor(intentId);
-        System.out.println("Final status: " + result.getStatus());
+        var result = client.waitFor(intentId, new ObserveOptions());
+        System.out.println("Final status: " + result.get("status"));
     }
 }
