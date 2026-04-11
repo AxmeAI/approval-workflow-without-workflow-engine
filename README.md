@@ -5,7 +5,7 @@ You need a simple approval chain: purchase request goes to a manager, then to fi
 **There is a better way.** Model each approval step as an intent with a human gate. No workflow engine, no state machine, no infrastructure to manage.
 
 > **Alpha** · Built with [AXME](https://github.com/AxmeAI/axme) (AXP Intent Protocol).
-> [cloud.axme.ai](https://cloud.axme.ai) · [hello@axme.ai](mailto:hello@axme.ai)
+> [cloud.axme.ai](https://cloud.axme.ai) · [contact@axme.ai](mailto:contact@axme.ai)
 
 ---
 
